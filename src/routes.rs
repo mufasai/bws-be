@@ -14,6 +14,13 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                     .route("/{id}", web::put().to(users::update_user))
                     .route("/{id}", web::delete().to(users::delete_user)),
             )
+            .service(
+                web::scope("/groups")
+                    .route("", web::get().to(groups::get_groups))
+                    .route("", web::post().to(groups::create_group))
+                    .route("/{id}", web::put().to(groups::update_group))
+                    .route("/{id}", web::delete().to(groups::delete_group)),
+            )
             .service(web::scope("/auth").route("/login", web::post().to(auth::login)))
             .service(
                 web::scope("/dashboard").route("/summary", web::get().to(dashboard::get_summary)),

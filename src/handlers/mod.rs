@@ -1,9 +1,11 @@
 pub mod admin;
 pub mod aplikasi;
 pub mod auth;
+pub mod auth;
 pub mod country_code;
 pub mod dashboard;
 pub mod gateway;
+pub mod groups;
 pub mod provider_prefixes;
 pub mod sms_costs;
 pub mod sms_template;

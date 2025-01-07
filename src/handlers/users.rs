@@ -1,6 +1,7 @@
 use crate::models::response::ApiResponse;
-use crate::models::user::{CreateUser, User};
+use crate::models::user::{CreateUser, FinishingUser, User, UserGet};
 use actix_web::{web, HttpResponse, Responder};
+use chrono::{DateTime, Utc};
 use surrealdb::engine::remote::ws::Client;
 use surrealdb::sql::Thing;
 use surrealdb::Surreal;
@@ -12,21 +13,33 @@ pub async fn create_user(
     let username = user.username.clone();
     let email = user.email.clone();
     let hashed_password = bcrypt::hash(&user.password, 10).unwrap();
-    let role = user.role.clone();
-    let telepon = user.telepon.clone();
-    let alamat = user.alamat.clone();
+    let phone_number = user.phone_number.clone();
+    let role = Thing::from(("groups", user.role.as_str()));
+    let fullname = user.fullname.clone();
+    let address = user.address.clone();
+    let country = user.country.clone();
+    let city = user.city.clone();
+    let state = user.state.clone();
+    let country_code = user.country_code.clone();
+    let verification_status = user.verification_status.clone();
 
     let sql = r#"
-        CREATE users 
-        SET 
-            username = $username, 
-            email = $email, 
-            password = $password,
-            role = $role,
-            telepon = $telepon,
-            alamat = $alamat,
-            created_at = time::now(), 
-            updated_at = time::now()
+    CREATE users 
+    SET 
+        username = $username, 
+        email = $email, 
+        password = $password, 
+        phone_number = $phone_number,
+        role = $role,
+        fullname = $fullname,
+        address = $address,
+        country = $country,
+        city = $city,
+        state = $state,
+        country_code = $country_code,
+        verification_status = $verification_status,
+        created_at = time::now(), 
+        updated_at = time::now()
     "#;
 
     let result = db
@@ -34,9 +47,15 @@ pub async fn create_user(
         .bind(("username", username))
         .bind(("email", email))
         .bind(("password", hashed_password))
+        .bind(("phone_number", phone_number))
         .bind(("role", role))
-        .bind(("telepon", telepon))
-        .bind(("alamat", alamat))
+        .bind(("fullname", fullname))
+        .bind(("address", address))
+        .bind(("country", country))
+        .bind(("city", city))
+        .bind(("state", state))
+        .bind(("country_code", country_code))
+        .bind(("verification_status", verification_status))
         .await;
 
     match result {
@@ -73,18 +92,49 @@ pub async fn create_user(
 
 pub async fn get_users(db: web::Data<Surreal<Client>>) -> impl Responder {
     log::debug!("Attempting to get all users");
-    let result = db.query("SELECT * FROM users").await;
+    let result = db
+        .query("SELECT * , role.role_name , role.role_description ,role.id  FROM users")
+        .await;
 
     match result {
         Ok(mut response) => {
             log::debug!("Query successful, processing response");
-            match response.take::<Vec<User>>(0) {
+            match response.take::<Vec<UserGet>>(0) {
                 Ok(users) => {
                     log::debug!("Found {} users", users.len());
+
+                    let transformed_users: Vec<FinishingUser> = users
+                        .into_iter()
+                        .map(|user| {
+                            // let role_id = user.role.id;
+                            // println!("Role ID: {:?}", role_id);
+
+                            FinishingUser {
+                                id: user.id,
+                                username: user.username,
+                                email: user.email,
+                                password: user.password,
+                                phone_number: user.phone_number,
+                                role_id: user.role.id,
+                                role_name: user.role.role_name,
+                                role_description: user.role.role_description,
+                                fullname: user.fullname,
+                                address: user.address,
+                                country: user.country,
+                                city: user.city,
+                                state: user.state,
+                                country_code: user.country_code,
+                                verification_status: user.verification_status,
+                                created_at: user.created_at,
+                                updated_at: user.updated_at,
+                            }
+                        })
+                        .collect();
+
                     HttpResponse::Ok().json(ApiResponse {
                         status: "success".to_string(),
                         message: "Users retrieved successfully".to_string(),
-                        data: Some(users),
+                        data: Some(transformed_users),
                     })
                 }
                 Err(e) => {
@@ -113,16 +163,37 @@ pub async fn update_user(
     user_id: web::Path<String>,
     user: web::Json<CreateUser>,
 ) -> impl Responder {
+    let user_id_str = user_id.as_str();
     let thing = Thing::from(("users", user_id.as_str()));
     let username = user.username.clone();
     let email = user.email.clone();
+    let hashed_password = bcrypt::hash(&user.password, 10).unwrap();
+    let phone_number = user.phone_number.clone();
+    let role = Thing::from(("groups", user.role.as_str()));
+    let fullname = user.fullname.clone();
+    let address = user.address.clone();
+    let country = user.country.clone();
+    let city = user.city.clone();
+    let state = user.state.clone();
+    let country_code = user.country_code.clone();
+    let verification_status = user.verification_status.clone();
 
     let sql = r#"
-        UPDATE $thing 
-        SET 
-            username = $username, 
-            email = $email, 
-            updated_at = time::now()
+    UPDATE $thing 
+    SET 
+        username = $username, 
+        email = $email, 
+        password = $password, 
+        phone_number = $phone_number,
+        role = $role,
+        fullname = $fullname,
+        address = $address,
+        country = $country,
+        city = $city,
+        state = $state,
+        country_code = $country_code,
+        verification_status = $verification_status,
+        updated_at = time::now()
     "#;
 
     let result = db
@@ -130,6 +201,16 @@ pub async fn update_user(
         .bind(("thing", thing))
         .bind(("username", username))
         .bind(("email", email))
+        .bind(("password", hashed_password))
+        .bind(("phone_number", phone_number))
+        .bind(("role", role))
+        .bind(("fullname", fullname))
+        .bind(("address", address))
+        .bind(("country", country))
+        .bind(("city", city))
+        .bind(("state", state))
+        .bind(("country_code", country_code))
+        .bind(("verification_status", verification_status))
         .await;
 
     match result {
