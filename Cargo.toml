@@ -1,0 +1,23 @@
+[package]
+name = "project_be"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4.4"
+actix-cors = "0.6.5"  # Tambahkan dependensi CORS
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+surrealdb = "2.1"
+tokio = { version = "1.0", features = ["full"] }
+bcrypt = "0.10"
+jsonwebtoken = "8.1"
+chrono = "0.4"
+env_logger = "0.10"
+log = "0.4"
+lettre = "0.10.0" # Gunakan versi terbaru jika ada
+uuid = { version = "1.3", features = ["v4"] }
+rand = "0.8"
+validator = "0.16"
+
+

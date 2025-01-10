@@ -1,0 +1,107 @@
+GET : http://localhost:8080/api/users
+RESPONSE: {
+  "status": "success",
+  "message": "Users retrieved successfully",
+  "data": [
+    {
+      "id": {
+        "tb": "users",
+        "id": {
+          "String": "nhbhvl8xhiyvjb8br0na"
+        }
+      },
+      "username": "avn2",
+      "email": "avn2@example.com",
+      "password": "$2b$10$0UjI4jOPTMjHMbqfldhXdu9g/6b7VmAPukWad0qDmF7VUUFUQR.y.",
+      "created_at": "2024-12-24T10:46:39.412955200Z",
+      "updated_at": "2024-12-24T10:51:59.450483Z"
+    }
+  ]
+}
+
+
+POST : http://localhost:8080/api/users
+BODY: {
+  "username": "avn1",
+  "email": "avn1@example.com",
+  "password": "password123"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "User created successfully",
+    "data": {
+        "id": {
+            "tb": "users",
+            "id": {
+                "String": "qu4oaxrmesbg9idgzd7a"
+            }
+        },
+        "username": "avn5",
+        "email": "avn5@example.com",
+        "password": "$2b$10$PkxbQX0/vfVDc3p1liBGqOmyDMpsvSWkx3rwEKSAQ9291GLfhoXZy",
+        "created_at": "2024-12-24T10:53:05.076187300Z",
+        "updated_at": "2024-12-24T10:53:05.076190100Z"
+    }
+}
+
+
+
+PUT : http://localhost:8080/api/users/7p2peqrzh20ylioaouc0
+BODY: {
+  "username": "avn1",
+  "email": "avn1@example.com",
+  "password": "password123"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "User updated successfully",
+    "data": {
+        "id": {
+            "tb": "users",
+            "id": {
+                "String": "nhbhvl8xhiyvjb8br0na"
+            }
+        },
+        "username": "avn2",
+        "email": "avn2@example.com",
+        "password": "$2b$10$0UjI4jOPTMjHMbqfldhXdu9g/6b7VmAPukWad0qDmF7VUUFUQR.y.",
+        "created_at": "2024-12-24T10:46:39.412955200Z",
+        "updated_at": "2024-12-24T10:51:59.450483Z"
+    }
+}
+
+
+
+DELETE : http://localhost:8080/api/users/7p2peqrzh20ylioaouc0
+RESPONSE: {
+    "status": "success",
+    "message": "User deleted successfully",
+    "data": null
+}
+
+
+GET : http://localhost:8080/api/dashboard/summary
+RESPONSE: {
+  "status": "success",
+  "message": "Dashboard summary retrieved successfully",
+  "data": {
+    "total_users": 1,
+    "active_users": 1
+  }
+}
+
+
+POST : http://localhost:8080/api/auth/login
+BODY: {
+  "username": "avn1",
+  "password": "password123"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "Login successful",
+    "data": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdm41IiwiZXhwIjoxNzM1MTI0MTIzfQ.mv_3U8txK2F5gNh_51ayec_9VeWTi4nX0D-_J2Xe2h8"
+    }
+}
+
+
