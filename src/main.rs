@@ -5,6 +5,7 @@ mod handlers;
 
 use actix_web::{web, App, HttpServer, middleware::Logger};
 use env_logger::Env;
+use actix_cors::Cors;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -21,6 +22,16 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .wrap(Logger::default())
+            .wrap(
+                Cors::default()
+                    .allowed_origin("http://localhost:5173") 
+                    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+                    .allowed_headers(vec![
+                        actix_web::http::header::CONTENT_TYPE,
+                        actix_web::http::header::AUTHORIZATION,
+                    ])
+                    .supports_credentials()
+            )
             .app_data(db.clone())
             .configure(routes::config)
     })
