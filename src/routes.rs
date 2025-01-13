@@ -21,6 +21,15 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                     .route("/{id}", web::put().to(groups::update_group))
                     .route("/{id}", web::delete().to(groups::delete_group)),
             )
+            .service(
+                web::scope("/auth")
+                    .route("/login", web::post().to(auth::login))
+                    .route("/register", web::post().to(auth::register))
+                    .route("/get_user", web::get().to(auth::get_user))
+                    .route("/verify_email", web::get().to(auth::verify_email))
+                    .route("/forgot_password", web::post().to(auth::forgot_password)) // Forgot Password
+                    .route("/reset_password", web::post().to(auth::reset_password)), // Reset Password
+            )
             .service(web::scope("/auth").route("/login", web::post().to(auth::login)))
             .service(
                 web::scope("/dashboard").route("/summary", web::get().to(dashboard::get_summary)),
