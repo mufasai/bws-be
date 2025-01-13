@@ -5,7 +5,6 @@ pub mod gateway;
 pub mod group;
 pub mod provider_prefixes;
 pub mod response;
-pub mod response;
 pub mod sms_costs;
 pub mod sms_template;
 pub mod user;
