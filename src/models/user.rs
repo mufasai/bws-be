@@ -1,6 +1,11 @@
+use std::sync::Arc;
+
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc, NaiveDate};
-use surrealdb::sql::Thing;
+use surrealdb::{engine::remote::ws::Client, sql::Thing, Surreal};
+use validator::Validate;
+
+
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -100,3 +105,25 @@ pub struct LoginResponse {
     pub token: String,
     pub message: String, // Make this field public
 }
+
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SMS {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+    pub phone_number: String,
+    pub message: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Debug, Deserialize, Validate)]
+pub struct InputSMSRequest {
+    #[validate(length(min = 10, max = 15, message = "Nomor telepon harus antara 10-15 digit"))]
+    pub phone_number: String,
+    #[validate(length(min = 1, max = 160, message = "Pesan harus antara 1-160 karakter"))]
+    pub message: String,
+}
+

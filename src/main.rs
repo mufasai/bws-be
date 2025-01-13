@@ -9,6 +9,9 @@ mod models;
 mod handlers;
 
 use crate::handlers::auth::register;
+use crate::handlers::input_sms_direct;
+use crate::input_sms_direct::input_sms_direct;
+
 
 // Fungsi handler untuk request OPTIONS (preflight request)
 async fn options_handler() -> HttpResponse {
@@ -49,6 +52,7 @@ async fn main() -> std::io::Result<()> {
                     .supports_credentials()
                     .max_age(3600)
             )
+            
             // Tambahkan route untuk register dengan metode POST
             .service(
                 web::resource("/api/auth/register")
@@ -61,6 +65,21 @@ async fn main() -> std::io::Result<()> {
                     .guard(guard::Options())
                     .to(options_handler),
             )
+
+            .service(
+                web::scope("/api/sms")
+                    .service(
+                        web::resource("/input")
+                            .guard(guard::Post())
+                            .to(input_sms_direct)
+                    )
+                    .service(
+                        web::resource("/input")
+                            .guard(guard::Options())
+                            .to(options_handler)
+                    )
+            )
+
             // Konfigurasi route lainnya
             .configure(routes::config)
     })

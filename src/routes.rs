@@ -1,5 +1,5 @@
 use actix_web::web;
-use crate::handlers::{users, auth, dashboard};
+use crate::handlers::{users, auth, dashboard, input_sms_direct::input_sms_direct};
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -25,5 +25,11 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 web::scope("/dashboard")
                     .route("/summary", web::get().to(dashboard::get_summary))
             )
+            
+            .service(
+                web::scope("/sms") // Scope untuk SMS
+                    .route("/input", web::post().to(input_sms_direct)) // Endpoint POST /sms/input
+            )
+
     );
 }
