@@ -9,3 +9,6 @@ pub mod provider_prefixes;
 pub mod sms_costs;
 pub mod sms_template;
 pub mod users;
+pub mod sms;
+pub mod inbox;
+pub mod input_sms;

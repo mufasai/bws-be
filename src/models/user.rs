@@ -1,6 +1,5 @@
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
 use surrealdb::sql::Thing;
 use validator::Validate;
 
@@ -119,6 +118,7 @@ pub struct ForgotPasswordResponse {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserLogreg {
+    pub id: Thing,
     pub username: String,
     pub first_name: String,
     pub last_name: String,
@@ -177,10 +177,14 @@ pub struct LoginRequest {
     pub password: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct LoginResponse {
     pub token: String,
-    pub message: String, // Make this field public
+    pub message: String,
+    pub id : Thing
+    // pub data : Option<User>,
+    // pub(crate) id: Thing, // Make this field public
+    
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

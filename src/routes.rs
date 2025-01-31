@@ -1,8 +1,8 @@
 use crate::handlers::{
-    admin, aplikasi, auth, country_code, dashboard, gateway, groups, provider_prefixes, sms_costs,
-    sms_template, users,
+    admin, aplikasi, auth, country_code, dashboard, gateway, groups, inbox, input_sms::{self, upload_json_file}, provider_prefixes, sms, sms_costs, sms_template, users
 };
 use actix_web::web;
+
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -25,7 +25,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                 web::scope("/auth")
                     .route("/login", web::post().to(auth::login))
                     .route("/register", web::post().to(auth::register))
-                    .route("/get_user", web::get().to(auth::get_user))
+                    // .route("/get_user", web::get().to(auth::get_user))
                     .route("/verify_email", web::get().to(auth::verify_email))
                     .route("/forgot_password", web::post().to(auth::forgot_password)) // Forgot Password
                     .route("/reset_password", web::post().to(auth::reset_password)), // Reset Password
@@ -89,6 +89,23 @@ pub fn config(cfg: &mut web::ServiceConfig) {
                     .route("", web::get().to(gateway::get_gateway))
                     .route("/{id}", web::put().to(gateway::update_gateway))
                     .route("/{id}", web::delete().to(gateway::delete_gateway)),
-            ),
+            )
+            .service(
+                web::scope("/sms")
+                    .route("/generate", web::post().to(sms::generate_otp))
+                    .route("/input", web::post().to(input_sms::input_sms_))  // Pastikan handler benar
+                    .route("/upload", web::post().to(upload_json_file))  // Menambahkan route untuk upload file
+            )
+            .service(
+                web::scope("/inbox/{user_id}")
+                    .route("", web::get().to(inbox::get_inbox)),
+                    
+            )
+            
+
+
+            
+            
+            
     );
 }

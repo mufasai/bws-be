@@ -38,7 +38,7 @@ const SMTP_PASSWORD: &str = "aitdtoqhcfimxojg";
 const JWT_SECRET: &str = "12345678";
 
 pub async fn get_user(db: web::Data<Surreal<Client>>) -> HttpResponse {
-    let result = db.query("SELECT * FROM register").await;
+    let result = db.query("SELECT * FROM users").await;
 
     match result {
         Ok(mut response) => {
@@ -201,7 +201,7 @@ pub async fn register(db: web::Data<Surreal<Client>>, user: web::Json<RegUser>) 
     let last_name = user_data.last_name.clone();
 
     // Convert the query parameters into owned Strings that will live for the duration of the function
-    let query = format!("SELECT * FROM register WHERE email = $email OR username = $username");
+    let query = format!("SELECT * FROM users WHERE email = $email OR username = $username");
 
     // Check existing user
     let existing_user = db
@@ -249,7 +249,7 @@ pub async fn register(db: web::Data<Surreal<Client>>, user: web::Json<RegUser>) 
     // Create the query string
     let create_query = format!(
         r#"
-        CREATE register SET 
+        CREATE users SET 
         username = $username,
         first_name = $first_name,
         last_name = $last_name,
@@ -260,6 +260,7 @@ pub async fn register(db: web::Data<Surreal<Client>>, user: web::Json<RegUser>) 
         dob = $dob
         "#
     );
+    
 
     // Create user in database using owned values
     let create_result = db
@@ -316,7 +317,7 @@ pub async fn verify_email(
 
     // Mencari pengguna berdasarkan verification_code
     let query_result = db
-        .query("SELECT * FROM register WHERE verification_code = $verification_code")
+        .query("SELECT * FROM users WHERE verification_code = $verification_code")
         .bind(("verification_code", query.token.clone()))
         .await;
 
@@ -327,7 +328,7 @@ pub async fn verify_email(
                     if let Some(user) = users.first() {
                         // Jika pengguna ditemukan, perbarui status is_verified menjadi true
                         let update_result = db
-                            .query("UPDATE register SET is_verified = true WHERE verification_code = $verification_code")
+                            .query("UPDATE users SET is_verified = true WHERE verification_code = $verification_code")
                             .bind(("verification_code", query.token.clone()))
                             .await;
 
@@ -385,19 +386,16 @@ pub(crate) async fn login(
     let username = login_req.username.clone();
     let password = login_req.password.clone();
 
-    // Query untuk mencari user berdasarkan username
     let result = db
-        .query("SELECT * FROM register WHERE username = $username")
+        .query("SELECT * FROM users WHERE username = $username")
         .bind(("username", username))
         .await;
 
     match result {
         Ok(mut response) => {
-            // Ambil data pengguna dari hasil query
             if let Ok(users) = response.take::<Vec<UserLogreg>>(0) {
                 if let Some(user) = users.first() {
-                    // Jika akun tidak terverifikasi
-                    if user.is_verified == false {
+                    if !user.is_verified {
                         return HttpResponse::Unauthorized().json(ApiResponse::<()> {
                             status: "error".to_string(),
                             message: "Email not verified".to_string(),
@@ -405,16 +403,15 @@ pub(crate) async fn login(
                         });
                     }
 
-                    // Periksa kecocokan password
+                    println!("user masuk -> {:#?}", user);
                     if verify(&password, &user.password).unwrap_or(false) {
-                        // Buat JWT token jika login berhasil
                         let claims = Claims {
                             sub: user.username.clone(),
                             exp: (std::time::SystemTime::now()
                                 + std::time::Duration::from_secs(3600))
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .unwrap()
-                            .as_secs() as usize,
+                                .duration_since(std::time::UNIX_EPOCH)
+                                .unwrap()
+                                .as_secs() as usize,
                         };
 
                         let token = match encode(
@@ -434,13 +431,14 @@ pub(crate) async fn login(
                             }
                         };
 
-                        // Login berhasil, kembalikan token
+                        println!("response login ->{:#?} ", response);
                         return HttpResponse::Ok().json(LoginResponse {
                             message: "Login successful".to_string(),
                             token,
+                            id : user.id.clone()
+                           
                         });
                     } else {
-                        // Password salah
                         return HttpResponse::Unauthorized().json(ApiResponse::<()> {
                             status: "error".to_string(),
                             message: "Incorrect password".to_string(),
@@ -450,7 +448,6 @@ pub(crate) async fn login(
                 }
             }
 
-            // Username tidak ditemukan
             HttpResponse::NotFound().json(ApiResponse::<()> {
                 status: "error".to_string(),
                 message: "User not found".to_string(),
@@ -458,7 +455,6 @@ pub(crate) async fn login(
             })
         }
         Err(_) => {
-            // Kesalahan internal server
             HttpResponse::InternalServerError().json(ApiResponse::<()> {
                 status: "error".to_string(),
                 message: "Internal server error".to_string(),
@@ -476,7 +472,7 @@ pub async fn forgot_password(
 
     // Cek apakah email terdaftar
     let result = db
-        .query("SELECT * FROM register WHERE email = $email")
+        .query("SELECT * FROM users WHERE email = $email")
         .bind(("email", email.clone()))
         .await;
 
@@ -490,7 +486,7 @@ pub async fn forgot_password(
 
                     // Update verification code di database
                     let update_result = db
-                        .query("UPDATE register SET verification_code = $verification_code WHERE email = $email")
+                        .query("UPDATE users SET verification_code = $verification_code WHERE email = $email")
                         .bind(("verification_code", verification_code.clone()))
                         .bind(("email", email.clone()))
                         .await;
@@ -551,7 +547,7 @@ pub async fn reset_password(
 
     // Verifikasi code
     let verify_result = db
-        .query("SELECT * FROM register WHERE email = $email AND verification_code = $verification_code")
+        .query("SELECT * FROM users WHERE email = $email AND verification_code = $verification_code")
         .bind(("email", email.clone()))
         .bind(("verification_code", verification_code.clone()))
         .await;
@@ -574,7 +570,7 @@ pub async fn reset_password(
 
                     // Update password
                     let update_result = db
-                        .query("UPDATE register SET password = $password, verification_code = '' WHERE email = $email")
+                        .query("UPDATE users SET password = $password, verification_code = '' WHERE email = $email")
                         .bind(("password", hashed_password))
                         .bind(("email", email))
                         .await;
