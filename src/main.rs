@@ -2,6 +2,9 @@ use actix_cors::Cors;
 use actix_web::http::header;
 use actix_web::{guard, middleware::Logger, web, App, HttpResponse, HttpServer};
 use env_logger::Env;
+use handlers::inbox::get_inbox;
+use handlers::input_sms::{input_sms_, upload_json_file};
+use handlers::sms::{generate_otp};
 mod db;
 mod handlers;
 mod models;
@@ -65,6 +68,28 @@ async fn main() -> std::io::Result<()> {
                     .guard(guard::Options())
                     .to(options_handler),
             )
+
+            .service(
+                web::resource("/api/sms/generate")
+                    .guard(guard::Post())
+                    .to(generate_otp),
+            )
+            .service(
+                web::resource("/api/inbox")
+                    .guard(guard::Get())
+                    .to(get_inbox),
+            )
+            .service(
+                web::resource("/api/sms/input")
+                    .guard(guard::Post())
+                    .to(input_sms_),
+            )
+            .service(
+                web::resource("/api/sms/upload")
+                    .guard(guard::Post())
+                    .to(upload_json_file),
+            )
+
             // Konfigurasi route lainnya
             .configure(routes::config)
     })

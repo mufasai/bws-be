@@ -8,3 +8,7 @@ pub mod response;
 pub mod sms_costs;
 pub mod sms_template;
 pub mod user;
+pub mod sms;
+pub mod inbox;
+pub mod show_file;
+pub mod input_sms;
