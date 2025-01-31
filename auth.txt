@@ -1,0 +1,73 @@
+//register
+GET: http://localhost:8080/api/auth/get_user
+RESPONSE: {
+    "status": "success",
+    "message": "Users retrieved successfully",
+    "data": [
+        {
+            "username": "musyafa",
+            "first_name": "Musyafa",
+            "last_name": "Fadila",
+            "email": "musafadil03@gmail.com",
+            "status": "verified",
+            "verification_code": "697862",
+            "is_verified": true,
+            "dob": "2025-01-02"
+        },
+    ]
+}
+
+POST: http://localhost:8080/api/auth/register
+BODY: {
+    "first_name": "musyafa",
+    "last_name": "fadila",
+    "username": "musyafa fadila",
+    "email": "musafadila2132@gmail.com",
+    "password": "12345678",
+    "dob": "2005-01-13"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "Registration successful. Please check your email for verification.",
+    "data": {
+        "email": "musafadila2132@gmail.com",
+        "verification_code": "835033"
+    }
+}
+
+GET http://localhost:8080/api/auth/verify_email?token=005319
+result:
+{
+    "success": true,
+    "message": "Email verification successful"
+}
+
+//forgot password
+POST http://localhost:8080/api/auth/forgot_password
+BODY :
+{
+  "email": "fauzilhokki@gmail.com"
+}
+
+RESPONSE: 
+{
+    "message": "Verification code sent to your email",
+    "email": "fauzilhokki@gmail.com"
+}
+
+//reset password
+POST http://localhost:8080/api/auth/reset_password
+BODY: 
+{
+  "email": "fauzilhokki@gmail.com",
+  "verification_code": "673335",
+  "new_password": "newPassword123"
+}
+
+RESPONSE: 
+{
+    "status": "success",
+    "message": "Password successfully reset",
+    "data": null
+}
+

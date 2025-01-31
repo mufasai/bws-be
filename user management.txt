@@ -1,0 +1,206 @@
+//user
+GET: http://localhost:8080/api/users
+RESPONSE:{
+ "status": "success",
+    "message": "Users retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "users",
+                "id": {
+                    "String": "a2yys987g81bsbsmm1mh"
+                }
+            },
+            "username": "dzaky",
+            "email": "dzaky@gmail.com",
+            "password": "$2b$10$LoN4XNqaHmfKyUBnzm0bnOsi8xJAMKD5EeDg0w2TCX4Eou5h/r1SO",
+            "phone_number": "08182323212",
+            "role_id": {
+                "tb": "groups",
+                "id": {
+                    "String": "u0j79s72zu0zqfnlc7dh"
+                }
+            },
+            "role_name": "admin",
+            "role_description": "admin memiliki akses penuh",
+            "fullname": "dzaky ganteng banget",
+            "address": "manuk icikiwir",
+            "country": "pwt",
+            "city": "banyumas",
+            "state": "pwt",
+            "country_code": "+62",
+            "verification_status": "active",
+            "created_at": "2025-01-15T08:00:33.653283Z",
+            "updated_at": "2025-01-15T08:00:54.757792Z"
+        },
+    ]
+}
+
+POST: http://localhost:8080/api/users
+BODY: {
+     "username": "amir",
+      "email": "amir@example.com",
+      "password": "amir",
+      "phone_number": "0888989876123",
+      "role": "29ggoxby42d6syfttxmy",
+      "fullname": "amir miftahul gus",
+      "address": "jl supratman 01 purwokerto utara",
+      "country": "indonesia",
+      "city": "purwokerto",
+      "state": "jawa tengah",
+      "country_code": "+62",
+      "verification_status": "active"
+}
+RESPONSE: {
+     "status": "success",
+    "message": "User created successfully",
+    "data": {
+        "id": {
+            "tb": "users",
+            "id": {
+                "String": "48lx1dhj8x1ti5go94jb"
+            }
+        },
+        "username": "amir",
+        "email": "amir@example.com",
+        "password": "$2b$10$IJ3x23lTWDhNtka0XSizZenr9AuUShXMOCmGPjgit5.OJo1KuGU9e",
+        "phone_number": "0888989876123",
+        "role": {
+            "tb": "groups",
+            "id": {
+                "String": "29ggoxby42d6syfttxmy"
+            }
+        },
+        "fullname": "amir miftahul gus",
+        "address": "jl supratman 01 purwokerto utara",
+        "country": "indonesia",
+        "city": "purwokerto",
+        "state": "jawa tengah",
+        "country_code": "+62",
+        "verification_status": "active",
+        "created_at": "2025-01-17T03:33:01.919918Z",
+        "updated_at": "2025-01-17T03:33:01.919920Z"
+    }
+}
+
+PUT: http://localhost:8080/api/users/{id}
+BODY: {
+     "username": "dzaky",
+      "email": "amir@example.com",
+      "password": "amir",
+      "phone_number": "0888989876123",
+      "role": "29ggoxby42d6syfttxmy",
+      "fullname": "amir miftahul gus",
+      "address": "jl supratman 01 purwokerto utara",
+      "country": "indonesia",
+      "city": "purwokerto",
+      "state": "jawa tengah",
+      "country_code": "+62",
+      "verification_status": "active"
+}
+RESPONSE: {
+     "status": "success",
+    "message": "User updated successfully",
+    "data": {
+        "id": {
+            "tb": "users",
+            "id": {
+                "String": "48lx1dhj8x1ti5go94jb"
+            }
+        },
+        "username": "dzaky",
+        "email": "amir@example.com",
+        "password": "$2b$10$znZxMa4fW9LFWuob2mfDzuOetYeUBDJAnutNLH6abVo0yQ7GHgjB2",
+        "phone_number": "0888989876123",
+        "role": {
+            "tb": "groups",
+            "id": {
+                "String": "29ggoxby42d6syfttxmy"
+            }
+        },
+        "fullname": "amir miftahul gus",
+        "address": "jl supratman 01 purwokerto utara",
+        "country": "indonesia",
+        "city": "purwokerto",
+        "state": "jawa tengah",
+        "country_code": "+62",
+        "verification_status": "active",
+        "created_at": "2025-01-17T03:33:01.919918Z",
+        "updated_at": "2025-01-17T03:42:30.839346Z"
+    }
+}
+
+DELETE: http://localhost:8080/api/users/{id}
+RESPONSE: {
+    "status": "success",
+    "message": "User deleted successfully",
+    "data": null
+}
+
+
+
+//groups
+GET: http://localhost:8080/api/groups
+RESPONSE:{
+    "status": "success",
+    "message": "Groups retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "groups",
+                "id": {
+                    "String": "tuq3xub81kauisek08jf"
+                }
+            },
+            "role_name": "supervisor",
+            "role_description": "supervisor tidak memiliki semua akses"
+        },
+    ]
+}
+
+POST: http://localhost:8080/api/groups
+BODY: {
+    "role_name": "supervisor",
+    "role_description": "supervisor tidak memiliki semua akses"
+}
+RESPONSE:{
+        "status": "success",
+    "message": "Group created successfully",
+    "data": {
+        "id": {
+            "tb": "groups",
+            "id": {
+                "String": "mdimgii0mziak8g30jnn"
+            }
+        },
+        "role_name": "supervisor",
+        "role_description": "supervisor tidak memiliki semua akses"
+    }
+}
+
+PUT: http://localhost:8080/api/groups/{id}
+BODY: {
+    "role_name": "admin",
+    "role_description": "admin memiliki semua akses"
+}
+RESPONSE:{
+    "status": "success",
+    "message": "Group updated successfully",
+    "data": {
+        "id": {
+            "tb": "groups",
+            "id": {
+                "String": "mdimgii0mziak8g30jnn"
+            }
+        },
+        "role_name": "admin",
+        "role_description": "admin memiliki semua akses"
+    }
+}
+
+DELETE: http://localhost:8080/api/groups/{id}
+RESPONSE:{
+     "status": "success",
+    "message": "Group deleted successfully",
+    "data": null
+}

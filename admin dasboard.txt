@@ -1,0 +1,468 @@
+//sms template
+GET: http://localhost:8080/api/sms-template
+RESPONSE: {
+    "status": "success",
+    "message": "SMS Template retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "sms_template",
+                "id": {
+                    "String": "iw9ae9t1m5spmjmyk3ld"
+                }
+            },
+            "judul": "Transaction Alert",
+            "content_type": "Transaction Alert",
+            "content": "Transaction of Rp 2.300.000 has been processed on 12.12.2024",
+            "created_by": "admin",
+            "created_at": "2025-01-02T07:05:09.325524Z",
+            "updated_at": "2025-01-15T04:15:39.250698Z"
+        },
+    ]
+}
+
+POST: http://localhost:8080/api/sms-template
+BODY: {
+    "judul": "Promotion",
+    "content_type" : "Promotion", 
+    "content" : "Hi John Dae, check out our latest promotion: Jangan lewatkan! FLASH SALE Aeorstreet hari ini jam 19.00 WIB. Diskon up to 70% untuk semua produk! ",
+    "created_by" : "admin"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "SMS Template created successfully",
+    "data": {
+        "id": {
+            "tb": "sms_template",
+            "id": {
+                "String": "mlvxl71mkuoq9f4h6sgu"
+            }
+        },
+        "judul": "Promotion",
+        "content_type": "Promotion",
+        "content": "Hi John Dae, check out our latest promotion: Jangan lewatkan! FLASH SALE Aeorstreet hari ini jam 19.00 WIB. Diskon up to 70% untuk semua produk! ",
+        "created_by": "admin",
+        "created_at": "2025-01-16T10:46:27.040980Z",
+        "updated_at": "2025-01-16T10:46:27.040984Z"
+    }
+}
+
+PUT: http://localhost:8080/api/sms-template/{id}
+BODY: {
+    "judul": "Transaction Alert",
+    "content_type" : "Transaction", 
+    "content" : "Transaction of Rp 2.300.000 has been processed on 12.12.2024",
+    "created_by" : "admin"
+}
+RESPONSE: {
+     "status": "success",
+    "message": "SMS Template updated successfully",
+    "data": {
+        "id": {
+            "tb": "sms_template",
+            "id": {
+                "String": "t9ej9x9if9uncub9qe8r"
+            }
+        },
+        "judul": "Transaction Alert",
+        "content_type": "Transaction",
+        "content": "Transaction of Rp 2.300.000 has been processed on 12.12.2024",
+        "created_by": "admin",
+        "created_at": "2025-01-15T03:46:50.993571Z",
+        "updated_at": "2025-01-16T10:47:27.528596Z"
+    }
+}
+
+DELETE: http://localhost:8080/api/sms-template/{id}
+RESPONSE: {
+    "status": "success",
+    "message": "SMS Template deleted successfully",
+    "data": null
+}
+
+
+//provider prefixes
+GET: http://localhost:8080/api/provider-prefixes
+RESPONSE: {
+    "status": "success",
+    "message": "Provider prefixes retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "provider_prefixes",
+                "id": {
+                    "String": "jo4rbyu3m3fuogfrl3j6"
+                }
+            },
+            "prefix": "0812",
+            "provider": "Telkomsel",
+            "status": "Active",
+            "created_at": "2025-01-13T07:56:27.216974Z",
+            "updated_at": "2025-01-14T03:14:53.188003Z"
+        }
+    ]
+}
+
+POST: http://localhost:8080/api/provider-prefixes
+BODY: {
+    "prefix" : "0812",
+    "provider" : "Telkomsel",
+    "status": "Active"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "Provider prefixes created successfully",
+    "data": {
+        "id": {
+            "tb": "provider_prefixes",
+            "id": {
+                "String": "d74y28pspvpcg57cz4ws"
+            }
+        },
+        "prefix": "0812",
+        "provider": "Telkomsel",
+        "status": "Active",
+        "created_at": "2025-01-16T10:51:42.481215Z",
+        "updated_at": "2025-01-16T10:51:42.481222Z"
+    }
+}
+
+PUT: http://localhost:8080/api/provider-prefixes/{id}
+BODY: {
+    "prefix" : "0857",
+    "provider" : "Indosat",
+    "status": "Inactive"
+}
+RESPONSE:{
+    "status": "success",
+    "message": "Provider prefixes updated successfully",
+    "data": {
+        "id": {
+            "tb": "provider_prefixes",
+            "id": {
+                "String": "kehxlcmbb1pdaskx0q38"
+            }
+        },
+        "prefix": "0857",
+        "provider": "Indosat",
+        "status": "Inactive",
+        "created_at": "2025-01-14T03:25:36.447330Z",
+        "updated_at": "2025-01-16T10:53:04.665734Z"
+    }
+}
+
+DELETE: http://localhost:8080/api/provider-prefixes/{id}
+RESPONSE: {
+    "status": "success",
+    "message": "Provider prefixes deleted successfully",
+    "data": null
+}
+
+
+//sms costs
+GET: http://localhost:8080/api/sms-cost
+RESPONSE: {
+    "status": "success",
+    "message": "SMS Costs retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "sms_cost",
+                "id": {
+                    "String": "0n8u7877l9r4f29bomx2"
+                }
+            },
+            "provider": "Oredoo",
+            "cost": "Rp. 2000",
+            "currency": "IDR",
+            "created_at": "2025-01-16T02:54:19.163859Z",
+            "updated_at": "2025-01-16T02:54:19.164098Z"
+        },
+    ]
+}
+
+POST: http://localhost:8080/api/sms-cost
+BODY: {
+    "provider": "Indosat",
+    "cost": "RP. 1500",
+    "currency": "IDR"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "SMS cost created successfully",
+    "data": {
+        "id": {
+            "tb": "sms_cost",
+            "id": {
+                "String": "pi3ew67iph2gq9oxuz74"
+            }
+        },
+        "provider": "Indosat",
+        "cost": "RP. 1500",
+        "currency": "IDR",
+        "created_at": "2025-01-16T10:55:10.300734Z",
+        "updated_at": "2025-01-16T10:55:10.300738Z"
+    }
+}
+
+
+PUT: http://localhost:8080/api/sms-cost/{id}
+BODY: {
+    "provider": "Smartfren",
+    "cost": "Rp. 1000",
+    "currency": "IDR"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "SMS cost updated successfully",
+    "data": {
+        "id": {
+            "tb": "sms_cost",
+            "id": {
+                "String": "0n8u7877l9r4f29bomx2"
+            }
+        },
+        "provider": "Smartfren",
+        "cost": "Rp. 1000",
+        "currency": "IDR",
+        "created_at": "2025-01-16T02:54:19.163859Z",
+        "updated_at": "2025-01-16T10:56:39.956976Z"
+    }
+}
+
+DELETE: http://localhost:8080/api/sms-cost/{id}
+RESPONSE: {
+    "status": "success",
+    "message": "SMS cost deleted successfully",
+    "data": null
+}
+
+//country code
+GET: http://localhost:8080/api/country-codes
+RESPONSE: {
+    "status": "success",
+    "message": "Country code retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "country_codes",
+                "id": {
+                    "String": "5n3oa6gowp7hecd1skir"
+                }
+            },
+            "code_number": "+62",
+            "country": "Indonesia",
+            "status": "Inactive",
+            "created_at": "2025-01-06T04:28:30.128881Z",
+            "updated_at": "2025-01-14T08:09:25.582792Z"
+        }]
+}
+POST: http://localhost:8080/api/country-codes
+BODY: {
+    "code_number": "+91",
+    "country": "SGP",
+    "status": "active"
+}
+RESPONSE: {
+"status": "success",
+    "message": "Country code created successfully",
+    "data": {
+        "id": {
+            "tb": "country_codes",
+            "id": {
+                "String": "z7szzszsgsys7fkmeeed"
+            }
+        },
+        "code_number": "+91",
+        "country": "SGP",
+        "status": "active",
+        "created_at": "2025-01-16T11:00:15.025573Z",
+        "updated_at": "2025-01-16T11:00:15.025579Z"
+    }
+}
+PUT: http://localhost:8080/api/country-codes/{id}
+BODY: {
+    "code_number": "+62",
+    "country": "Indonesia",
+    "status": "Inactive"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "Country code updated successfully",
+    "data": {
+        "id": {
+            "tb": "country_codes",
+            "id": {
+                "String": "z7szzszsgsys7fkmeeed"
+            }
+        },
+        "code_number": "+62",
+        "country": "Indonesia",
+        "status": "Inactive",
+        "created_at": "2025-01-16T11:00:15.025573Z",
+        "updated_at": "2025-01-16T11:01:13.491345Z"
+    }
+}
+DELETE: http://localhost:8080/api/country-codes/{id}
+RESPONSE: {
+    "status": "success",
+    "message": "Country code deleted successfully",
+    "data": null
+}
+
+//applikasi
+GET: http://localhost:8080/api/aplikasi
+RESPONSE: {
+    "status": "success",
+    "message": "Aplikasi retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "aplikasi",
+                "id": {
+                    "String": "2ayud32wpuswktt5peux"
+                }
+            },
+            "app_name": "Internal System",
+            "status": "Inactive",
+            "api_key": "is_api_key",
+            "created_at": "2025-01-10T05:59:08.360795Z",
+            "updated_at": "2025-01-10T05:59:08.360800Z"
+        },
+    ]
+}
+
+POST: http://localhost:8080/api/aplikasi
+BODY: {
+     "app_name": "OTP",
+    "status": "Active",
+    "api_key": "otp_api_key"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "Aplikasi created successfully",
+    "data": {
+        "id": {
+            "tb": "aplikasi",
+            "id": {
+                "String": "zozg5vvxiwekira7435q"
+            }
+        },
+        "app_name": "OTP",
+        "status": "Active",
+        "api_key": "otp_api_key",
+        "created_at": "2025-01-16T11:04:03.055988Z",
+        "updated_at": "2025-01-16T11:04:03.055990Z"
+    }
+}
+PUT: http://localhost:8080/api/aplikasi/{id}
+BODY: {
+     "app_name":"Web",
+    "status":"Active",
+    "api_key":"ksdnsdLJNFJKL"
+}
+RESPONSE: {
+    "status": "success",
+    "message": "Aplikasi updated successfully",
+    "data": {
+        "id": {
+            "tb": "aplikasi",
+            "id": {
+                "String": "zozg5vvxiwekira7435q"
+            }
+        },
+        "app_name": "Web",
+        "status": "Active",
+        "api_key": "ksdnsdLJNFJKL",
+        "created_at": "2025-01-16T11:04:03.055988Z",
+        "updated_at": "2025-01-16T11:05:15.377827Z"
+    }
+}
+DELETE: http://localhost:8080/api/aplikasi/{id}
+RESPONSE: {
+     "status": "success",
+    "message": "Aplikasi deleted successfully",
+    "data": null
+}
+
+//gateway
+GET: http://localhost:8080/api/gateway
+RESPONSE: {
+    "status": "success",
+    "message": "Gateway retrieved successfully",
+    "data": [
+        {
+            "id": {
+                "tb": "gateway",
+                "id": {
+                    "String": "0stl1m52rj0490o950r5"
+                }
+            },
+            "app_name": "Web",
+            "status": "Inactive",
+            "priority": "3",
+            "failover": "3",
+            "created_at": "2025-01-12T23:40:54.744847Z",
+            "updated_at": "2025-01-12T23:40:54.744849Z"
+        },
+    ]
+}
+
+POST: http://localhost:8080/api/gateway
+BODY: {
+    "app_name": "E-Commerce App",
+    "status": "Active",
+    "priority": "3",
+    "failover": "2"
+}
+RESPONSE: {
+     "status": "success",
+    "message": "Gateway created successfully",
+    "data": {
+        "id": {
+            "tb": "gateway",
+            "id": {
+                "String": "8tmvrdxn221tdwv8fzm1"
+            }
+        },
+        "app_name": "E-Commerce App",
+        "status": "Active",
+        "priority": "3",
+        "failover": "2",
+        "created_at": "2025-01-17T03:25:02.265573Z",
+        "updated_at": "2025-01-17T03:25:02.265677Z"
+    }
+}
+
+PUT: http://localhost:8080/api/gateway/{id}
+BODY: {
+     "app_name": "Internal System",
+    "status": "Active",
+    "priority": "3",
+    "failover": "None"
+}
+RESPONSE: {
+     "status": "success",
+    "message": "Gateway updated successfully",
+    "data": {
+        "id": {
+            "tb": "gateway",
+            "id": {
+                "String": "8tmvrdxn221tdwv8fzm1"
+            }
+        },
+        "app_name": "Internal System",
+        "status": "Active",
+        "priority": "3",
+        "failover": "None",
+        "created_at": "2025-01-17T03:25:02.265573Z",
+        "updated_at": "2025-01-17T03:26:07.270569Z"
+    }
+}
+
+DELETE: http://localhost:8080/api/gateway/{id}
+RESPONSE: {
+     "status": "success",
+    "message": "Gateway deleted successfully",
+    "data": null
+}

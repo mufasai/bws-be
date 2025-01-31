@@ -46,7 +46,8 @@ async fn main() -> std::io::Result<()> {
             // Konfigurasi middleware CORS
             .wrap(
                 Cors::default()
-                    .allowed_origin("http://localhost:5173") // Ganti sesuai URL frontend Anda
+                    .allowed_origin("http://localhost:5173")
+                    .allowed_origin("192.168.1.15")
                     .allowed_methods(vec!["GET", "POST", "PUT", "DELETE", "OPTIONS"])
                     .allowed_headers(vec![header::CONTENT_TYPE, header::AUTHORIZATION])
                     .allow_any_header()
